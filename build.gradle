@@ -1,0 +1,133 @@
+buildscript {
+    ext { springBootVersion = '2.0.4.RELEASE' }
+    repositories {
+        maven {
+            url 'https://repo.eway.vn/artifactory/'
+            credentials {
+                username = "${eway_jfrog_username}"
+                password = "${eway_jfrog_pwd}"
+            }
+        }
+
+    }
+    dependencies {
+        //Check for the latest version here: http://plugins.gradle.org/plugin/com.jfrog.artifactory
+        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4+'
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id "groovy"
+    id "idea"
+    id "org.springframework.boot" version "2.0.4.RELEASE"
+    id "com.jfrog.artifactory" version "4.7.5"
+}
+
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'groovy'
+apply plugin: 'idea'
+
+artifactory {
+    //The base Artifactory URL if not overridden by the publisher/resolver
+    contextUrl = 'https://repo.eway.vn/artifactory/'
+    publish {
+        repository {
+            repoKey = 'releases'
+            username = "${eway_jfrog_username}"
+            password = "${eway_jfrog_pwd}"
+            maven = true
+        }
+    }
+
+    resolve {
+        repository {
+            // create a virtual repository
+            repoKey = 'snapshots'
+            username = "${eway_jfrog_username}"
+            password = "${eway_jfrog_pwd}"
+            maven = true
+        }
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+allprojects {
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://repo.eway.vn/artifactory/'
+            credentials {
+                username = "${eway_jfrog_username}"
+                password = "${eway_jfrog_pwd}"
+            }
+        }
+    }
+}
+
+idea {
+    module {
+        inheritOutputDirs = false
+        outputDir = file("$buildDir/classes/groovy/main")
+    }
+}
+
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src/main/java"]
+        }
+        resources {
+            srcDirs = ["src/main/resources"]
+        }
+    }
+}
+
+bootRun {
+    if (project.hasProperty('args')) {
+        args project.args.split(',')
+    }
+}
+
+dependencies {
+    // Eway libs include: spring-dev-tools, using jetty server instead tomcat
+    compile(group: 'io.x10.commons.spring', name: 'spring-commons', version: '2.2-SNAPSHOT')
+
+    // Groovy
+    compile "org.codehaus.groovy:groovy-all:2.4.15"
+
+    // Spring
+    compileOnly "org.springframework.boot:spring-boot-configuration-processor"
+
+    // Spring webflux
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: '2.0.5.RELEASE'
+
+    // Spring integration
+    compile group: 'org.springframework.integration', name: 'spring-integration-core', version: '5.0.8.RELEASE'
+    compile group: 'org.springframework.integration', name: 'spring-integration-stream', version: '5.0.8.RELEASE'
+
+
+    // Logback
+    compile "ch.qos.logback:logback-core:1.2.3"
+    compile "ch.qos.logback:logback-classic:1.2.3"
+
+    // Spock
+    testCompile "org.springframework.boot:spring-boot-starter-test:2.0.4.RELEASE"
+    testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
+    testCompile "org.spockframework:spock-spring:1.1-groovy-2.4"
+    testRuntime "cglib:cglib-nodep:3.2.4"
+
+    // Aws
+    compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.398'
+
+    // Clickhouse
+    compile group: 'ru.yandex.clickhouse', name: 'clickhouse-jdbc', version: '0.1.41'
+
+    // Other
+    compile "com.fasterxml.uuid:java-uuid-generator:3.1.5"
+}
