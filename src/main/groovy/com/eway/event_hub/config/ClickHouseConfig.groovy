@@ -1,9 +1,9 @@
-package com.eway.event_hub.config;
+package com.eway.event_hub.config
 
 import groovy.transform.Canonical
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.stereotype.Component
 
 /**
  * Created by Tu Pham Phuong - phamptu@gmail.com on 8/30/18.*/
