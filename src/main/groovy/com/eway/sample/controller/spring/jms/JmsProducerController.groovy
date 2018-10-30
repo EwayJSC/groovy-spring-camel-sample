@@ -1,4 +1,4 @@
-package com.eway.sample.controller.camel.jms
+package com.eway.sample.controller.spring.jms
 
 import com.eway.common.util.ExceptionUtil
 import groovy.util.logging.Slf4j
@@ -23,7 +23,8 @@ class JmsProducerController {
         log.info("JmsProducerController get")
 
         try {
-            jmsTemplate.convertAndSend("JmsProducerController", "My message");
+            jmsTemplate.convertAndSend("Jms_Text", "Hello");
+            jmsTemplate.convertAndSend("Jms_POJO", new Email("info@example.com", "Hello"));
         } catch (Exception e) {
             ExceptionUtil.toString(e)
         }
