@@ -1,11 +1,9 @@
-# Name: Notification 
+# Name: Spring Camel Sample 
 Project sử dụng Spring Boot, Spock test với groovy.
 
 # Purpose 
    
 # Project Details  
-## Clickhouse
-## Webflux
 
 # Getting Started
 ## Build
@@ -44,13 +42,13 @@ Một test case với Spoc và Mock
 #Author
 
 ```
-Name: Tu Tat Huan
-Email: tientt@eway.vn
+Name: Pham Phuong Tu
+Email: tupp@eway.vn
 ```
 #Contributors
 ```
-Name: Pham Phuong Tu
-Email: tupp@eway.vn
+Name: Hoang Manh Tien
+Email: tienhm@eway.vn
 ```
 
 #Acknowledgments
